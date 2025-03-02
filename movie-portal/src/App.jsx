@@ -1,12 +1,27 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import React, { useEffect, useState } from "react";
+import { getMovies } from "./assets/api";
+import MovieList from "./components/MovieList";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const moviesData = await getMovies();
+        setMovies(moviesData);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    };
 
-  return <></>;
+    fetchMovies();
+  }, []);
+
+  return (
+    <div>
+      <MovieList movies={movies} />
+    </div>
+  );
 }
 
 export default App;
