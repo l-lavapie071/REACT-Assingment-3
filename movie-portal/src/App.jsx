@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getMovies } from "./assets/api";
+import { getMovies } from "./services/api";
 import MovieList from "./components/MovieList";
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
     const fetchMovies = async () => {
       try {
         const moviesData = await getMovies();
+        console.log(moviesData);
         setMovies(moviesData);
       } catch (error) {
         console.error("Error fetching movies:", error);
