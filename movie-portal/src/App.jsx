@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { getMovies } from "./services/api";
-import MovieList from "./components/MovieList";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import Home from "./components/Home";
+import MovieDetails from "./components/MovieDetails";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -11,7 +13,6 @@ function App() {
   const fetchMovies = async (searchQuery) => {
     try {
       const moviesData = await getMovies(searchQuery);
-      console.log(moviesData);
       setMovies(moviesData);
       setSource(searchQuery ? "Search Results" : "Top Rated");
     } catch (error) {
@@ -29,22 +30,25 @@ function App() {
   };
 
   return (
-    <div className="container mt-4">
-      <form className="input-group mb-3" onSubmit={handleSearch}>
-        <input
-          type="text"
-          className="form-control mr-2"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for a movie..."
-        />
-        <button type="submit" className="btn btn-primary">
-          Search
-        </button>
-      </form>
-      <h2>{source} Movies</h2>
-      <MovieList movies={movies} />
-    </div>
+    <Router>
+      <div className="container mt-4">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                movies={movies}
+                query={query}
+                setQuery={setQuery}
+                handleSearch={handleSearch}
+                source={source}
+              />
+            }
+          />
+          <Route path="/movie/:id" element={<MovieDetails />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

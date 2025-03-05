@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 import Pagination from "react-bootstrap/Pagination";
 
 const genres = {
@@ -23,7 +23,7 @@ const genres = {
   37: "Western",
 };
 
-function MovieList({ movies, title }) {
+function MovieList({ movies }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState("");
   const moviesPerPage = 6;
@@ -56,13 +56,13 @@ function MovieList({ movies, title }) {
 
   return (
     <div className="container">
-      {/* <h1 className="my-4">Top Rated Movies</h1> */}
       <div className="mb-4">
         <label htmlFor="genre-select">Filter by Genre:</label>
         <select
           id="genre-select"
           value={selectedGenre}
           onChange={handleGenreChange}
+          aria-label="Filter movies by genre"
         >
           <option value="">All</option>
           {Object.entries(genres).map(([id, name]) => (
@@ -76,13 +76,16 @@ function MovieList({ movies, title }) {
         {currentMovies.map((movie) => (
           <div className="col-6 col-md-4 col-lg-3 col-xl-2 mb-4" key={movie.id}>
             <div className="card h-100">
-              <img
-                src={`${import.meta.env.VITE_IMAGE_BASE_URL}${
-                  movie.poster_path
-                }`}
-                className="card-img-top"
-                alt={movie.title}
-              />
+              <Link to={`/movie/${movie.id}`}>
+                <img
+                  src={`${import.meta.env.VITE_IMAGE_BASE_URL}${
+                    movie.poster_path
+                  }`}
+                  className="card-img-top"
+                  alt={movie.title}
+                  aria-label={`Poster of ${movie.title}`}
+                />
+              </Link>
               <div className="card-body">
                 <h5 className="card-title">{movie.title}</h5>
                 <p className="card-text">
@@ -102,6 +105,7 @@ function MovieList({ movies, title }) {
             key={number + 1}
             active={number + 1 === currentPage}
             onClick={() => paginate(number + 1)}
+            aria-label={`Go to page ${number + 1}`}
           >
             {number + 1}
           </Pagination.Item>
