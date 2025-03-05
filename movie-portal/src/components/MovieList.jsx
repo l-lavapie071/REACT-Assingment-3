@@ -23,7 +23,7 @@ const genres = {
   37: "Western",
 };
 
-function MovieList({ movies }) {
+function MovieList({ movies, title }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState("");
   const moviesPerPage = 6;
@@ -56,9 +56,9 @@ function MovieList({ movies }) {
 
   return (
     <div className="container">
-      <h1 className="my-4">Top Rated Movies</h1>
+      {/* <h1 className="my-4">Top Rated Movies</h1> */}
       <div className="mb-4">
-        <label htmlFor="genre-select">Filter by Genre: </label>
+        <label htmlFor="genre-select">Filter by Genre:</label>
         <select
           id="genre-select"
           value={selectedGenre}
